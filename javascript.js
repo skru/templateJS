@@ -12,7 +12,6 @@ $("body").on("click", "[data-zcc-block='navbar'] [data-zcc-block='navbar-dropdow
     $(this).toggleClass("is-active");
     // close any other open menus
     var openMenus = $("body").find("[data-zcc-block='navbar-menu'] .is-active").not(this);
-    console.log("opens", openMenus)
     openMenus.each(function () {
       $(this).toggleClass("is-active");
     });
@@ -52,17 +51,41 @@ $("body").on("click", "[data-zcc-block='form'] [data-zcc-block='form-submit']", 
   var isValid = true;
   var wrapper = $(this).parents("[data-zcc-block='form']")
   var fields = $(wrapper).find("[data-zcc-block='form-field']");
-  fields.each(function (index) {
+  fields.each(function () {
     // get input and errors for each field
     var input = $(this).find("[data-zcc-block='form-field-input']")
     var errors = $(this).find("[data-zcc-block='form-field-error']")
     errors.html(""); // reset any errors
-    if (!input[0].checkValidity()) { // check validity
-      isValid = false;
-      errors.html(input[0].validationMessage);
+
+    // is select?
+    if (input.prop('type') == 'select-one' || input.prop('type') == 'select-multiple') {
+      if (input.prop('required')) {
+        if (!input[0].checkValidity() || input.val() === "") {
+          isValid = false;
+          errors.html("Please select an option");
+        }
+      }
+    }
+    // else if (input.prop('type') == 'select-multiple') {
+    //   if (input.prop('required')) {
+    //     console.log("multi", input[0], input[0].checkValidity())
+    //     if (!input[0].checkValidity() || input.val() === "") {
+    //       isValid = false;
+    //       errors.html("Please select an option");
+    //     }
+    //   }
+    // }
+
+
+    else {
+      if (!input[0].checkValidity()) { // check validity
+        isValid = false;
+        errors.html(input[0].validationMessage);
+      }
     }
   });
   if (isValid) {
+    console.log($(wrapper).serialize())
     $.ajax({
       url: this.http,
       type: 'POST',
