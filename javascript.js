@@ -7,7 +7,6 @@ $("body").on("click", "[data-zcc-block='navbar'] [data-zcc-block='navbar-burger'
 // navbar dropdown
 $("body").on("click", "[data-zcc-block='navbar'] [data-zcc-block='navbar-dropdown']", function (event) {
   // prevent clicking on items closing menu
-  console.log("cl")
   if ($(event.target).attr('data-zcc-block') === "navbar-link") {
     $(this).toggleClass("is-active");
     // close any other open menus
@@ -57,31 +56,28 @@ $("body").on("click", "[data-zcc-block='form'] [data-zcc-block='form-submit']", 
     var errors = $(this).find("[data-zcc-block='form-field-error']")
     errors.html(""); // reset any errors
 
-    // is select?
-    if (input.prop('type') == 'select-one' || input.prop('type') == 'select-multiple') {
-      if (input.prop('required')) {
-        if (!input[0].checkValidity() || input.val() === "") {
-          isValid = false;
-          errors.html("Please select an option");
+    switch (input.prop('type')) {
+      case 'select-one': // validate select
+        if (input.prop('required')) {
+          if (!input[0].checkValidity() || input.val() === "") {
+            isValid = false;
+            errors.html("Please select an option");
+          }
         }
-      }
-    }
-    // else if (input.prop('type') == 'select-multiple') {
-    //   if (input.prop('required')) {
-    //     console.log("multi", input[0], input[0].checkValidity())
-    //     if (!input[0].checkValidity() || input.val() === "") {
-    //       isValid = false;
-    //       errors.html("Please select an option");
-    //     }
-    //   }
-    // }
-
-
-    else {
-      if (!input[0].checkValidity()) { // check validity
-        isValid = false;
-        errors.html(input[0].validationMessage);
-      }
+        break;
+      case 'select-multiple': // validate select multiple
+        if (input.prop('required')) {
+          if (!input[0].checkValidity() || input.val()[0] == "") {
+            isValid = false;
+            errors.html("Please select at least one option");
+          }
+        }
+        break;
+      default:
+        if (!input[0].checkValidity()) { // check validity
+          isValid = false;
+          errors.html(input[0].validationMessage);
+        }
     }
   });
   if (isValid) {
