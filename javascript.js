@@ -50,6 +50,8 @@ $("body").on("click", "[data-zcc-block='form'] [data-zcc-block='form-submit']", 
   var isValid = true;
   var wrapper = $(this).parents("[data-zcc-block='form']")
   var fields = $(wrapper).find("[data-zcc-block='form-field']");
+
+  // validate each field
   fields.each(function () {
     // get input and errors for each field
     var input = $(this).find("[data-zcc-block='form-field-input']")
