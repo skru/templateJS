@@ -85,6 +85,7 @@ $(function () {
         }
       });
       if (isValid) {
+        notification[0].classList.remove("is-hidden");
         $.ajax({
           url: this.http,
           type: 'POST',
@@ -94,7 +95,7 @@ $(function () {
             notification[0].classList.remove("is-hidden");
           },
           error: function (xhr) {
-            alert(xhr.responseText);
+            //alert(xhr.responseText);
           }
         });
       }
@@ -103,6 +104,6 @@ $(function () {
   });
 
   // notifications
-  var notifications = new Notifications(".notification");
+  var notifications = new Notifications(".form-notification");
   notifications.init();
 });
