@@ -51,7 +51,6 @@ $(function () {
     var isValid = true;
     var wrapper = $(this).parents("[data-zcc-block='form']")
     var fields = $(wrapper).find("[data-zcc-block='form-field']");
-    console.log("fs", fields.length)
     if (fields.length !== 0) { // check form has fields
       var notification = $(wrapper).find("[data-zcc-block='form-notification']");
       // validate each field
